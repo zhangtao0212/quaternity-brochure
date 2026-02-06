@@ -1,0 +1,33 @@
+[Unit]
+Description=Qosmos Website Server
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=www
+Group=www
+WorkingDirectory=/home/www/qosmos
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=SMTP_HOST=smtp.example.com
+Environment=SMTP_PORT=587
+Environment=SMTP_USER=contact@qosmos.one
+Environment=SMTP_PASS=your-email-password
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=qosmos
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/www/qosmos
+
+[Install]
+WantedBy=multi-user.target
