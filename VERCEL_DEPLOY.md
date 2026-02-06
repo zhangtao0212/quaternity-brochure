@@ -1,288 +1,107 @@
-# Vercel + Vercel KV Deployment Guide
+# Vercel Deployment Guide - Simplified Version
 
-## Architecture Overview
+## Architecture
 
 ```
-User Request (https://qosmos.one)
-           │
-           ▼
-    ┌──────────────┐
-    │   Vercel     │
-    │   CDN/Edge   │
-    └──────┬───────┘
-           │
-    ┌──────┴───────┐
-    │              │
-┌───▼───┐    ┌─────▼─────┐
-│ Front │    │  API       │
-│ End   │    │  Functions │
-└───────┘    └─────┬───────┘
-                   │
-            ┌──────┴──────┐
-            │   Vercel KV  │
-            │   (Redis)    │
-            └──────────────┘
+User submits email
+       │
+       ▼
+┌─────────────┐
+│  Vercel     │  POST /api/subscribe
+│  API        │──────────────┐
+└─────────────┘              │
+                              ▼
+                    ┌───────────────┐
+                    │   Resend      │
+                    │   (Send Mail) │
+                    └───────────────┘
+                              │
+                              ▼
+                    contact@qosmos.one  📧
 ```
 
-## Prerequisites
+## What's Changed
 
-1. **Vercel Account**: https://vercel.com (free to sign up)
-2. **Domain**: qosmos.one (pointing to your VPS IP temporarily, we'll switch to Vercel)
-3. **Email Service**: Resend (https://resend.com) - free tier available
+- **No database storage** - emails are sent directly
+- **No daily reports** - each subscription sends an email
+- **Simpler setup** - only Resend API needed
 
 ---
 
-## Step 1: Create Vercel KV Database
+## Deployment Steps
 
-```bash
-# Option A: Via Vercel CLI
-npm i -g vercel
-vercel login
-vercel kv create qosmos-kv
+### 1. Configure Resend (https://resend.com)
 
-# Option B: Via Vercel Dashboard
-# 1. Go to https://vercel.com/storage
-# 2. Click "Create Database" -> "KV"
-# 3. Name: qosmos-kv
-# 4. Select region: IAD1 (Washington D.C.)
-# 5. Click "Create"
-```
+1. Sign up for free at https://resend.com
+2. Verify your email
+3. Go to **API Keys** → **Create API Key**
+4. Copy your API key (starts with `re_`)
 
-**Important**: Note down the `KV_REST_API_URL` and `KV_REST_API_TOKEN` shown after creation.
-
----
-
-## Step 2: Configure Environment Variables
-
-### Option A: Vercel Dashboard
+### 2. Deploy to Vercel
 
 1. Go to https://vercel.com/dashboard
-2. Select your project (import from GitHub)
-3. Go to **Settings** → **Environment Variables**
-4. Add the following:
+2. Click **Add New...** → **Project**
+3. Import your GitHub repository `zhangtao0212/quaternity-brochure`
+4. In **Environment Variables**, add:
 
-| Name | Value | Environment |
-|------|-------|-------------|
-| `KV_REST_API_URL` | (from Step 1) | Production, Development |
-| `KV_REST_API_TOKEN` | (from Step 1) | Production, Development |
-| `DOMAIN` | `qosmos.one` | Production, Development |
-| `REPORT_EMAIL` | `contact@qosmos.one` | Production, Development |
-| `RESEND_API_KEY` | (from Resend) | Production, Development |
+| Name | Value |
+|------|-------|
+| `RESEND_API_KEY` | `re_your_api_key_here` |
+| `FROM_EMAIL` | `newsletter@qosmos.one` |
+| `TO_EMAIL` | `contact@qosmos.one` |
 
-### Option B: Vercel CLI
+5. Click **Deploy**
 
-```bash
-vercel env add KV_REST_API_URL production
-vercel env add KV_REST_API_TOKEN production
-vercel env add DOMAIN production
-vercel env add REPORT_EMAIL production
-vercel env add RESEND_API_KEY production
-```
+### 3. Configure Domain
 
----
-
-## Step 3: Deploy to Vercel
-
-### Option A: Git Integration (Recommended)
-
-1. **Push to GitHub**:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Qosmos website with Vercel KV"
-   git remote add origin https://github.com/yourusername/quaternity-brochure.git
-   git push -u origin main
-   ```
-
-2. **Import to Vercel**:
-   - Go to https://vercel.com/dashboard
-   - Click "Add New..." → "Project"
-   - Select your GitHub repository
-   - Click "Deploy"
-
-### Option B: Vercel CLI
-
-```bash
-vercel --prod
-```
-
----
-
-## Step 4: Configure Domain
-
-### In Vercel Dashboard:
-
-1. Go to **Settings** → **Domains**
+1. In Vercel Dashboard → Your Project → **Settings** → **Domains**
 2. Add `qosmos.one`
-3. Add `www.qosmos.one`
-4. Vercel will provide DNS records
-
-### Update DNS (at your domain registrar):
-
-Add the CNAME records provided by Vercel:
-
-```
-Type: CNAME
-Name: @
-Value: cname.vercel-dns.com
-
-Type: CNAME  
-Name: www
-Value: cname.vercel-dns.com
-```
-
-### Remove VPS Configuration:
-
-Once Vercel DNS propagates (can take up to 24 hours):
-- Remove the A record pointing to `198.13.57.142`
-- The Nginx/VPS configuration is no longer needed for the main site
+3. Update DNS at your domain registrar:
+   - Remove A record pointing to `198.13.57.142`
+   - Add CNAME record: `@` → `cname.vercel-dns.com`
 
 ---
 
-## Step 5: Configure Email Service (Resend)
+## How It Works
 
-1. **Sign up** at https://resend.com (free tier: 100 emails/month)
-2. **Get API Key** from Dashboard → API Keys
-3. **Add to Vercel**:
-   ```bash
-   vercel env add RESEND_API_KEY production
-   # Enter: re_xxxxxxxxxxxxx
-   ```
+1. User enters email and clicks "Join"
+2. Request sent to `/api/subscribe`
+3. Vercel uses Resend API to send email to `contact@qosmos.one`
+4. User sees "Thank you!" message
 
 ---
 
-## Step 6: Verify Deployment
+## Environment Variables
 
-### Test the API:
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `RESEND_API_KEY` | ✅ Yes | Get from https://resend.com |
+| `FROM_EMAIL` | No | Sender email (default: `newsletter@qosmos.one`) |
+| `TO_EMAIL` | No | Recipient email (default: `contact@qosmos.one`) |
+
+---
+
+## Testing
 
 ```bash
-# Check stats
-curl https://qosmos.one/api/stats
-
-# Submit a test email
+# Test subscription
 curl -X POST https://qosmos.one/api/subscribe \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com"}'
 
-# Check stats again
-curl https://qosmos.one/api/stats
+# Response:
+# {"message":"Thank you! We will be in touch soon."}
 ```
 
-### View Subscribers in Vercel Dashboard:
-
-1. Go to https://vercel.com/storage
-2. Click on your KV database
-3. Use the Data Browser to view stored subscribers
+You should receive an email at `contact@qosmos.one`.
 
 ---
 
-## Step 7: Configure Cron Job (Daily Reports)
+## Cost
 
-The cron job is already configured in `vercel.json` to run at **9:00 AM daily**.
+| Service | Free Tier | Cost |
+|---------|-----------|------|
+| Vercel | Unlimited | $0 |
+| Resend | 100 emails/month | $0 |
 
-To verify:
-1. Go to **Settings** → **Cron Jobs**
-2. You should see `api/cron/report` scheduled for daily execution
-
----
-
-## Managing Subscribers
-
-### View All Subscribers
-
-```bash
-# Using Vercel CLI
-vercel kv keys list
-vercel kv get subscribers:emails
-```
-
-### Export Subscribers
-
-1. Go to **Vercel Dashboard** → **Storage** → **KV**
-2. Click on your database
-3. Use Data Browser or export to JSON
-
-### Delete a Subscriber
-
-```bash
-# Via API (requires authentication)
-curl -X DELETE https://qosmos.one/api/subscribe \
-  -H "Authorization: Bearer YOUR_SECRET"
-```
-
----
-
-## Monitoring
-
-### View Logs
-
-```bash
-# Vercel CLI
-vercel logs --prod
-```
-
-### Monitor Cron Jobs
-
-1. Go to **Vercel Dashboard** → **Functions** → **Cron Jobs**
-2. View execution history and status
-
----
-
-## Troubleshooting
-
-### "KV_REST_API_URL not found"
-
-1. Check environment variables are set in Vercel Dashboard
-2. Redeploy after adding variables: `vercel --prod`
-
-### "Connection refused" errors
-
-1. Verify KV database is in the same region as your deployment
-2. Check API route is not timing out (Vercel functions have 10s timeout)
-
-### Cron job not running
-
-1. Verify `vercel.json` has correct cron configuration
-2. Check the function is deployed in Production (not Preview)
-3. Cron jobs require a paid plan on Vercel (Pro or Enterprise)
-
----
-
-## Updating the Website
-
-### Via Git Push
-
-```bash
-git add .
-git commit -m "Update: description of changes"
-git push origin main
-```
-
-Vercel will automatically deploy.
-
-### Via Vercel CLI
-
-```bash
-vercel --prod
-```
-
----
-
-## Cost Estimation
-
-| Service | Free Tier | Notes |
-|---------|-----------|-------|
-| Vercel (Hobby) | Unlimited | Static sites + functions |
-| Vercel KV | 1 GB | 10K reads/day, 10K writes/day |
-| Resend | 100 emails/month | More than enough for daily reports |
-| Domain | ~$12/year | .one domain |
-
-**Estimated Monthly Cost**: $0 (within free tiers for most sites)
-
----
-
-## Support
-
-- Vercel Docs: https://vercel.com/docs
-- Vercel KV: https://vercel.com/docs/storage/vercel-kv
-- Resend Docs: https://resend.com/docs
+**Total: $0**
