@@ -8,7 +8,7 @@ interface EmailResponse {
   error?: { message?: string }
 }
 
-async function sendNotificationEmail(email: string): Promise<{ success: boolean; error?: string }> {
+async function sendNotificationEmail(email: string): Promise<{ success: boolean; error?: string; details?: string }> {
   const apiKey = process.env.RESEND_API_KEY
 
   if (!apiKey) {
@@ -53,18 +53,17 @@ async function sendNotificationEmail(email: string): Promise<{ success: boolean;
 
     console.log('📧 Resend response status:', response.status)
 
-    const data: EmailResponse = await response.json()
-
     if (response.ok) {
-      console.log('📧 Email sent successfully, ID:', data.data?.id)
+      console.log('📧 Email sent successfully')
       return { success: true }
     } else {
+      const data: EmailResponse = await response.json()
       console.error('📧 Resend error:', data.error?.message || response.statusText)
-      return { success: false, error: data.error?.message || response.statusText }
+      return { success: false, error: data.error?.message || response.statusText, details: `HTTP ${response.status}` }
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('📧 Exception:', error)
-    return { success: false, error: String(error) }
+    return { success: false, error: error.message, details: 'Network error' }
   }
 }
 
@@ -88,13 +87,13 @@ export async function POST(request: Request) {
         message: 'Thank you! We will be in touch soon.'
       })
     } else {
-      console.error('📧 Failed to send email:', result.error)
+      console.error('📧 Failed:', result.error, result.details)
       return NextResponse.json(
-        { error: 'Failed to process. Please try again.' },
+        { error: 'Failed to send email. Please try again later.' },
         { status: 500 }
       )
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('📧 POST error:', error)
     return NextResponse.json(
       { error: 'Something went wrong. Please try again.' },
@@ -104,8 +103,14 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  const hasApiKey = !!process.env.RESEND_API_KEY
   return NextResponse.json({
     status: 'ok',
-    message: 'Qosmos subscription service is running'
+    message: 'Qosmos subscription service is running',
+    config: {
+      hasApiKey,
+      toEmail: TO_EMAIL,
+      fromEmail: FROM_EMAIL
+    }
   })
 }
