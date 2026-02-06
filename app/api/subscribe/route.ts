@@ -5,18 +5,20 @@ const FROM_EMAIL = process.env.FROM_EMAIL || 'newsletter@qosmos.one'
 
 interface EmailResponse {
   data?: { id?: string }
-  error?: { message?: string }
+  error?: { message?: string; name?: string }
 }
 
-async function sendNotificationEmail(email: string): Promise<{ success: boolean; error?: string; details?: string }> {
-  const apiKey = process.env.RESEND_API_KEY
+async function sendNotificationEmail(email: string) {
+  const apiKey = process.env.RESEND_API_KEY || ''
 
-  if (!apiKey) {
-    console.log('📧 [TEST MODE] New subscriber:', email)
-    return { success: true }
+  console.log('=== DEBUG ===')
+  console.log('RESEND_API_KEY present:', apiKey.length > 0)
+  console.log('TO_EMAIL:', TO_EMAIL)
+  console.log('FROM_EMAIL:', FROM_EMAIL)
+
+  if (!apiKey || apiKey.length < 10) {
+    return { success: false, error: 'RESEND_API_KEY not configured', debug: 'API key missing or too short' }
   }
-
-  console.log('📧 Sending email for:', email)
 
   const timestamp = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })
 
@@ -51,19 +53,23 @@ async function sendNotificationEmail(email: string): Promise<{ success: boolean;
       })
     })
 
-    console.log('📧 Resend response status:', response.status)
+    console.log('Resend HTTP status:', response.status)
+    const data: EmailResponse = await response.json()
 
-    if (response.ok) {
-      console.log('📧 Email sent successfully')
+    if (response.ok && data.data?.id) {
+      console.log('✅ Email sent successfully')
       return { success: true }
     } else {
-      const data: EmailResponse = await response.json()
-      console.error('📧 Resend error:', data.error?.message || response.statusText)
-      return { success: false, error: data.error?.message || response.statusText, details: `HTTP ${response.status}` }
+      console.error('❌ Resend error:', data.error?.name, data.error?.message)
+      return { 
+        success: false, 
+        error: data.error?.message || 'Resend API error',
+        debug: `HTTP ${response.status}, name: ${data.error?.name}`
+      }
     }
   } catch (error: any) {
-    console.error('📧 Exception:', error)
-    return { success: false, error: error.message, details: 'Network error' }
+    console.error('❌ Exception:', error.message)
+    return { success: false, error: error.message, debug: 'Network/exception error' }
   }
 }
 
@@ -73,44 +79,29 @@ export async function POST(request: Request) {
     const email = body.email
 
     if (!email || !email.includes('@')) {
-      return NextResponse.json(
-        { error: 'Please enter a valid email address' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Please enter a valid email address' }, { status: 400 })
     }
 
     console.log('📧 New subscription:', email)
     const result = await sendNotificationEmail(email)
 
     if (result.success) {
-      return NextResponse.json({
-        message: 'Thank you! We will be in touch soon.'
-      })
+      return NextResponse.json({ message: 'Thank you! We will be in touch soon.' })
     } else {
-      console.error('📧 Failed:', result.error, result.details)
-      return NextResponse.json(
-        { error: 'Failed to send email. Please try again later.' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: result.error }, { status: 500 })
     }
   } catch (error: any) {
-    console.error('📧 POST error:', error)
-    return NextResponse.json(
-      { error: 'Something went wrong. Please try again.' },
-      { status: 500 }
-    )
+    console.error('POST error:', error.message)
+    return NextResponse.json({ error: 'Something went wrong' }, { status: 500 })
   }
 }
 
 export async function GET() {
-  const hasApiKey = !!process.env.RESEND_API_KEY
   return NextResponse.json({
     status: 'ok',
-    message: 'Qosmos subscription service is running',
-    config: {
-      hasApiKey,
-      toEmail: TO_EMAIL,
-      fromEmail: FROM_EMAIL
-    }
+    hasApiKey: !!process.env.RESEND_API_KEY && process.env.RESEND_API_KEY!.length > 10,
+    apiKeyPrefix: process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY.substring(0, 8) + '...' : 'NOT SET',
+    toEmail: TO_EMAIL,
+    fromEmail: FROM_EMAIL
   })
 }
