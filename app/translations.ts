@@ -120,6 +120,7 @@ export const translations = {
     'join.desc': 'Be among the first to experience the future of inclusive finance. Leave your email to get early access and updates.',
     'join.placeholder': 'Enter your email address',
     'join.button': 'Join Now',
+    'join.sending': 'Sending...',
     'join.success': 'Thank you! We will be in touch soon.',
     'join.error': 'Please enter a valid email address',
     
@@ -248,6 +249,7 @@ export const translations = {
     'join.desc': '成为首批体验普惠金融未来的先行者。留下您的邮箱，获取早期访问权限和最新动态。',
     'join.placeholder': '请输入您的邮箱地址',
     'join.button': '立即加入',
+    'join.sending': '发送中...',
     'join.success': '感谢您！我们将尽快与您联系。',
     'join.error': '请输入有效的邮箱地址',
     

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useLanguage } from './LanguageContext'
+import JoinForm from './JoinForm'
 
 // Particle class for background animation
 class Particle {
@@ -61,9 +62,6 @@ function drawConnections(particles: Particle[], ctx: CanvasRenderingContext2D) {
 
 export default function Home() {
   const { t, language } = useLanguage()
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
   const [mounted, setMounted] = useState(false)
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 })
 
@@ -118,36 +116,6 @@ export default function Home() {
       cancelAnimationFrame(animationId)
     }
   }, [mounted, canvasSize])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!email || !email.includes('@')) {
-      setStatus('error')
-      setMessage(t('join.error'))
-      return
-    }
-
-    try {
-      const response = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      })
-
-      if (response.ok) {
-        setStatus('success')
-        setMessage(t('join.success'))
-        setEmail('')
-      } else {
-        setStatus('error')
-        setMessage('Something went wrong. Please try again.')
-      }
-    } catch {
-      setStatus('error')
-      setMessage('Something went wrong. Please try again.')
-    }
-  }
 
   if (!mounted) {
     return <div className="loading">Loading...</div>
@@ -382,29 +350,7 @@ export default function Home() {
           <h2 className="join-title">{t('join.title')}</h2>
           <p className="join-desc">{t('join.desc')}</p>
           
-          <form className="join-form" onSubmit={handleSubmit}>
-            <div className="input-wrapper">
-              <input
-                type="email"
-                className="join-input"
-                placeholder={t('join.placeholder')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button type="submit" className="join-button">
-                <span>{t('join.button')}</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </form>
-          
-          {status !== 'idle' && (
-            <div className={`join-message ${status}`}>
-              {message}
-            </div>
-          )}
+          <JoinForm />
         </div>
       </section>
 
