@@ -7,13 +7,11 @@ export const translations = {
     'nav.join': 'Join Us',
     
     // Hero
-    'hero.badge': 'Global Web3 Financial Infrastructure',
-    'hero.title': 'The On-Chain',
-    'hero.titleHighlight': 'Bank for the Unbanked',
-    'hero.subtitle': 'Redefining inclusive finance with blockchain technology and AI. Providing accessible financial services to the 1.7 billion unbanked worldwide.',
-    'hero.stat1': 'Lower Cross-border Costs',
-    'hero.stat2': 'Account Setup',
-    'hero.stat3': 'Countries Coming',
+    'hero.badge': 'The Future of Crypto Finance',
+    'hero.title': 'Spend Your Crypto,',
+    'hero.titleHighlight': 'Earn While You Hold.',
+    'hero.subtitle': 'The On-Chain Bank for the Unbanked. A unified financial account built on stablecoins, enabling you to use, grow, and manage crypto wealth in one seamless experience.',
+    'hero.cta': 'Get Started',
     
     // About
     'about.title': 'About Qosmos',
@@ -96,10 +94,13 @@ export const translations = {
     'whynow.4.title': '25%+ E-commerce Growth',
     'whynow.4.desc': 'Cross-border e-commerce is growing at over 25% annually, driving demand for seamless international payments.',
     
-    // Vision
+    // Vision & Community
     'vision.title': 'Our Vision',
-    'vision.subtitle': 'Building the future of inclusive finance',
-    'vision.desc': 'Become the on-chain bank and financial partner for the unbanked and SMEs globally. Committed to being the "Alipay + Financial Advisor + Cross-border Business Platform" of the Web3 era.',
+    'vision.subtitle': 'Building the Next Generation of Crypto Finance',
+    'vision.desc': 'We are building the next generation of crypto finance—evolving from payments into a comprehensive, long-term on-chain bank.',
+    'community.x': 'X',
+    'community.telegram': 'Telegram',
+    'community.announcement': ' Announcement',
     
     // Technology
     'tech.title': 'Technology Architecture',
@@ -136,30 +137,56 @@ export const translations = {
     'nav.join': '加入我们',
     
     // Hero
-    'hero.badge': '全球Web3金融基础设施',
-    'hero.title': '链上银行',
-    'hero.titleHighlight': '为无银行账户者服务',
-    'hero.subtitle': '通过区块链技术和AI重新定义普惠金融。为全球17亿无银行账户人群提供无障碍金融服务。',
-    'hero.stat1': '跨境交易成本降低',
-    'hero.stat2': '开户时间',
-    'hero.stat3': '覆盖国家',
+    'hero.badge': '加密金融的未来',
+    'hero.title': '既是支付卡，',
+    'hero.titleHighlight': '也是收益账户。',
+    'hero.subtitle': '为"无银行账户"人群打造的链上银行。基于稳定币的统一金融账户，让您在无缝体验中支取、增长并管理加密财富。',
+    'hero.cta': '立即开始',
     
     // About
     'about.title': '关于Qosmos',
     'about.subtitle': '我们是谁',
     'about.desc': 'Qosmos是一个为全球17亿无银行账户人群与中小企业提供普惠金融服务的链上银行平台。通过区块链技术与智能合约打造低成本、高效、安全的包容性金融服务。',
     
-    // Value Proposition
-    'value.title': '核心价值主张',
-    'value.subtitle': '打破金融包容性的技术壁垒',
-    'value.1.title': '降低70%跨境交易成本',
-    'value.1.desc': '通过区块链技术显著降低跨境交易成本，让国际转账人人可负担。',
-    'value.2.title': '5分钟极速开户',
-    'value.2.desc': '无需传统银行审核，几分钟即可完成开户。无繁琐流程，无漫长等待。',
-    'value.3.title': 'AI驱动的财富管理',
-    'value.3.desc': '人工智能驱动的智能资产配置和个性化投资建议。',
-    'value.4.title': '链上信用体系',
-    'value.4.desc': '通过区块链活动建立信用度，您的链上行为创造可验证的数字身份。',
+    // Problem / Why Qosmos Pay
+    'problem.title': '为什么选择 Qosmos Pay？',
+    'problem.subtitle': '解决核心痛点',
+    'problem.1.title': '消除隔阂',
+    'problem.1.desc': '资产在链上，而生活在链下。我们为您弥合数字财富与日常需求之间的断层。',
+    'problem.2.title': '拒绝取舍',
+    'problem.2.desc': '传统模式下，消费场所没有收益，而理财场所则会锁死资金。在 Qosmos Pay，您无需再做选择。',
+    
+    // Core Capabilities
+    'capabilities.title': '一个账户，双重能量。',
+    'capabilities.subtitle': '全面的加密金融解决方案',
+    
+    // Spend Section
+    'spend.title': '消费 —— 让加密货币回归货币属性',
+    'spend.1.title': '全球支付',
+    'spend.1.desc': '虚拟卡与实体卡随心选，覆盖全球线上线下消费场景。',
+    'spend.2.title': '原生支持',
+    'spend.2.desc': '直接支持 USDT 和 USDC 充值。',
+    'spend.3.title': '无缝转换',
+    'spend.3.desc': '商家接收法币，您使用加密货币余额支付，为您提供真正的资产流动性。',
+    
+    // Earn Section
+    'earn.title': '收益 —— 让加密货币成为生息资本',
+    'earn.1.title': '定期理财',
+    'earn.1.desc': '提供 30/60/90 天理财产品，规则清晰，结构透明。',
+    'earn.2.title': '高效资产',
+    'earn.2.desc': '让您的资产在不牺牲可用性的前提下高效增值。',
+    'earn.3.title': '远离投机',
+    'earn.3.desc': '专注于可持续的资产增长，而非高频炒作。',
+    
+    // Product Principles
+    'principles.title': '基于诚信与实用。',
+    'principles.subtitle': '我们的核心原则',
+    'principles.1.title': '支付先行',
+    'principles.1.desc': '只有能够顺畅使用的资产才具有持久价值。',
+    'principles.2.title': '清晰规划',
+    'principles.2.desc': '相比于炒作，我们更看重确定的期限和透明的规则。',
+    'principles.3.title': '统一未来',
+    'principles.3.desc': '一个账户应同时支持消费、储蓄和资产增长。',
     
     // Services
     'services.title': '我们的服务',
@@ -225,10 +252,13 @@ export const translations = {
     'whynow.4.title': '25%+电商增长',
     'whynow.4.desc': '跨境电商年增长率超过25%，推动对无缝国际支付的需求。',
     
-    // Vision
+    // Vision & Community
     'vision.title': '我们的愿景',
-    'vision.subtitle': '构建普惠金融的未来',
-    'vision.desc': '成为全球无银行账户人群与中小企业的链上银行与金融伙伴。致力于成为Web3时代的"支付宝+理财顾问+跨境商业服务平台"。',
+    'vision.subtitle': '构建下一代加密金融',
+    'vision.desc': '我们正在构建下一代加密金融 —— 从支付起步，逐步演变为一家全面的、长期的链上银行。',
+    'community.x': 'X',
+    'community.telegram': 'Telegram',
+    'community.announcement': ' Announcement',
     
     // Technology
     'tech.title': '技术架构',
