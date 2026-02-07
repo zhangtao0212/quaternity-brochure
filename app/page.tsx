@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useLanguage } from './LanguageContext'
 import JoinForm from './JoinForm'
 
-// Particle class for background animation
+// Particle class for background animation - updated colors for monnaire-style theme
 class Particle {
   x: number
   y: number
@@ -35,7 +35,7 @@ class Particle {
   draw(ctx: CanvasRenderingContext2D) {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-    ctx.fillStyle = `rgba(91, 127, 255, ${this.opacity})`
+    ctx.fillStyle = `rgba(14, 165, 233, ${this.opacity})` // Using monnaire accent color #0EA5E9
     ctx.fill()
   }
 }
@@ -50,7 +50,7 @@ function drawConnections(particles: Particle[], ctx: CanvasRenderingContext2D) {
       if (distance < 120) {
         const opacity = (1 - distance / 120) * 0.2
         ctx.beginPath()
-        ctx.strokeStyle = `rgba(91, 127, 255, ${opacity})`
+        ctx.strokeStyle = `rgba(14, 165, 233, ${opacity})`
         ctx.lineWidth = 0.4
         ctx.moveTo(particles[i].x, particles[i].y)
         ctx.lineTo(particles[j].x, particles[j].y)
@@ -61,7 +61,7 @@ function drawConnections(particles: Particle[], ctx: CanvasRenderingContext2D) {
 }
 
 export default function Home() {
-  const { t, language } = useLanguage()
+  const { t } = useLanguage()
   const [mounted, setMounted] = useState(false)
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 })
 
@@ -122,321 +122,239 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main className="font-sans">
       {/* Particle Background */}
-      <canvas id="particles" className="particles-canvas" />
+      <canvas id="particles" className="particles-canvas fixed inset-0 pointer-events-none" />
       
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-glow" />
-        <div className="hero-content">
-          <div className="hero-badge">
-            <span className="badge-dot" />
-            <span>{t('hero.badge')}</span>
-          </div>
-          
-          <h1 className="hero-title">
-            {t('hero.title')}<br />
-            <span className="hero-gradient">{t('hero.titleHighlight')}</span>
-          </h1>
-          
-          <p className="hero-subtitle">
-            {t('hero.subtitle')}
-          </p>
-          
-          <div className="hero-cta">
-            <a href="#join" className="cta-button primary">
-              {t('hero.cta')}
-              <svg viewBox="0 0 20 20" fill="currentColor" style={{ width: 16, height: 16 }}>
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
-            </a>
-          </div>
-        </div>
+      {/* Hero Section - Inspired by monnaire-homepage */}
+      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-primary bg-grid"></div>
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-accent/20 rounded-full filter blur-3xl animate-pulse-slow"></div>
+        <div className="absolute -bottom-40 -left-20 w-96 h-96 bg-highlight/20 rounded-full filter blur-3xl animate-pulse-slow delay-700"></div>
         
-        <div className="scroll-indicator">
-          <div className="mouse">
-            <div className="wheel" />
-          </div>
-          <span>{language === 'en' ? 'Scroll' : '向下滚动'}</span>
-        </div>
-      </section>
-
-      {/* Problem / Why Qosmos Pay */}
-      <section className="section problem-section" id="problem">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('problem.subtitle')}</span>
-            <h2 className="section-title">{t('problem.title')}</h2>
-          </div>
-          
-          <div className="problem-grid">
-            <div className="problem-card" style={{ animationDelay: '0ms' }}>
-              <div className="problem-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z" />
-                </svg>
-              </div>
-              <h3 className="problem-title">{t('problem.1.title')}</h3>
-              <p className="problem-desc">{t('problem.1.desc')}</p>
+        <div className="container mx-auto px-4 pt-10 relative z-10">
+          <div className="max-w-5xl mx-auto text-center animate-fade-in">
+            <h1 className="text-[clamp(2.5rem,6vw,4rem)] font-bold leading-tight mb-8 tracking-tight">
+              <span className="text-gradient bg-gradient-to-r from-white via-metal to-white">
+                {t('hero.headline')}
+              </span>
+            </h1>
+            
+            <p className="text-[clamp(1.2rem,3vw,1.8rem)] text-metal mb-12 leading-relaxed">
+              {t('hero.subheadline')}
+            </p>
+            
+            <div className="flex flex-col md:flex-row justify-center gap-6 mb-20">
+              <a href="#join" className="px-8 py-4 rounded-full bg-gradient-to-r from-accent to-highlight text-white font-medium text-lg hover:shadow-lg hover:shadow-highlight/20 transition-all hover-scale">
+                {t('hero.cta')}
+              </a>
             </div>
             
-            <div className="problem-card" style={{ animationDelay: '100ms' }}>
-              <div className="problem-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75">
-                  <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+            {/* Scroll indicator */}
+            <div className="animate-bounce mt-16">
+              <a href="#problem" className="text-metal hover:text-white">
+                <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
-              </div>
-              <h3 className="problem-title">{t('problem.2.title')}</h3>
-              <p className="problem-desc">{t('problem.2.desc')}</p>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Capabilities */}
-      <section className="section capabilities-section" id="capabilities">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('capabilities.subtitle')}</span>
-            <h2 className="section-title">{t('capabilities.title')}</h2>
+      {/* The Problem Section */}
+      <section id="problem" className="py-20 relative bg-secondary">
+        <div className="absolute inset-0 bg-grid opacity-20"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-6 text-gradient bg-gradient-to-r from-white to-metal">
+              {t('problem.title')}
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Problem Card 1 */}
+            <div className="bg-primary/50 p-8 rounded-xl border border-white/10 hover-scale">
+              <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11v6h2v-6h-2zm0-4v2h2V7h-2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">{t('problem.bridging.title')}</h3>
+              <p className="text-metal">{t('problem.bridging.desc')}</p>
+            </div>
+            
+            {/* Problem Card 2 */}
+            <div className="bg-primary/50 p-8 rounded-xl border border-white/10 hover-scale">
+              <div className="w-16 h-16 rounded-full bg-highlight/20 flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-4 text-white">{t('problem.tradeoffs.title')}</h3>
+              <p className="text-metal">{t('problem.tradeoffs.desc')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Capabilities Section */}
+      <section id="capabilities" className="py-20 relative bg-primary">
+        <div className="absolute inset-0 bg-tech-grid"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-6 text-gradient bg-gradient-to-r from-white to-metal">
+              {t('capabilities.title')}
+            </h2>
           </div>
           
           {/* Spend Section */}
-          <div className="capability-block">
-            <h3 className="capability-title">{t('spend.title')}</h3>
-            <div className="capability-grid">
-              <div className="capability-card">
-                <div className="capability-icon">💳</div>
-                <h4 className="capability-name">{t('spend.1.title')}</h4>
-                <p className="capability-desc">{t('spend.1.desc')}</p>
-              </div>
-              <div className="capability-card">
-                <div className="capability-icon">🪙</div>
-                <h4 className="capability-name">{t('spend.2.title')}</h4>
-                <p className="capability-desc">{t('spend.2.desc')}</p>
-              </div>
-              <div className="capability-card">
-                <div className="capability-icon">⚡</div>
-                <h4 className="capability-name">{t('spend.3.title')}</h4>
-                <p className="capability-desc">{t('spend.3.desc')}</p>
-              </div>
+          <div className="mb-16">
+            <h3 className="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-8 text-center text-white">
+              {t('capabilities.spend.title')}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((num) => (
+                <div key={num} className="bg-secondary/50 p-6 rounded-xl border border-white/10 hover-scale">
+                  <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
+                    {num === 1 && <span className="text-xl">💳</span>}
+                    {num === 2 && <span className="text-xl">🪙</span>}
+                    {num === 3 && <span className="text-xl">⚡</span>}
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-white">{t(`capabilities.spend.${num}.title`)}</h4>
+                  <p className="text-metal text-sm">{t(`capabilities.spend.${num}.desc`)}</p>
+                </div>
+              ))}
             </div>
           </div>
           
           {/* Earn Section */}
-          <div className="capability-block">
-            <h3 className="capability-title">{t('earn.title')}</h3>
-            <div className="capability-grid">
-              <div className="capability-card">
-                <div className="capability-icon">📅</div>
-                <h4 className="capability-name">{t('earn.1.title')}</h4>
-                <p className="capability-desc">{t('earn.1.desc')}</p>
-              </div>
-              <div className="capability-card">
-                <div className="capability-icon">📈</div>
-                <h4 className="capability-name">{t('earn.2.title')}</h4>
-                <p className="capability-desc">{t('earn.2.desc')}</p>
-              </div>
-              <div className="capability-card">
-                <div className="capability-icon">🎯</div>
-                <h4 className="capability-name">{t('earn.3.title')}</h4>
-                <p className="capability-desc">{t('earn.3.desc')}</p>
-              </div>
+          <div>
+            <h3 className="text-[clamp(1.5rem,3vw,2rem)] font-bold mb-8 text-center text-white">
+              {t('capabilities.earn.title')}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((num) => (
+                <div key={num} className="bg-secondary/50 p-6 rounded-xl border border-white/10 hover-scale">
+                  <div className="w-12 h-12 rounded-full bg-highlight/20 flex items-center justify-center mb-4">
+                    {num === 1 && <span className="text-xl">📅</span>}
+                    {num === 2 && <span className="text-xl">📈</span>}
+                    {num === 3 && <span className="text-xl">🎯</span>}
+                  </div>
+                  <h4 className="text-lg font-bold mb-2 text-white">{t(`capabilities.earn.${num}.title`)}</h4>
+                  <p className="text-metal text-sm">{t(`capabilities.earn.${num}.desc`)}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Product Principles */}
-      <section className="section principles-section" id="principles">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('principles.subtitle')}</span>
-            <h2 className="section-title">{t('principles.title')}</h2>
+      {/* Product Principles Section */}
+      <section id="principles" className="py-20 relative bg-secondary">
+        <div className="absolute inset-0 bg-grid opacity-30"></div>
+        <div className="absolute top-40 right-20 w-80 h-80 bg-highlight/10 rounded-full filter blur-3xl"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-6 text-gradient bg-gradient-to-r from-white to-metal">
+              {t('principles.title')}
+            </h2>
           </div>
           
-          <div className="principles-grid">
-            <div className="principle-card" style={{ animationDelay: '0ms' }}>
-              <div className="principle-number">01</div>
-              <h3 className="principle-title">{t('principles.1.title')}</h3>
-              <p className="principle-desc">{t('principles.1.desc')}</p>
-            </div>
-            
-            <div className="principle-card" style={{ animationDelay: '100ms' }}>
-              <div className="principle-number">02</div>
-              <h3 className="principle-title">{t('principles.2.title')}</h3>
-              <p className="principle-desc">{t('principles.2.desc')}</p>
-            </div>
-            
-            <div className="principle-card" style={{ animationDelay: '200ms' }}>
-              <div className="principle-number">03</div>
-              <h3 className="principle-title">{t('principles.3.title')}</h3>
-              <p className="principle-desc">{t('principles.3.desc')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vision & Community */}
-      <section className="section vision-section" id="vision">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('vision.subtitle')}</span>
-            <h2 className="section-title">{t('vision.title')}</h2>
-          </div>
-          
-          <div className="vision-content">
-            <p className="vision-desc">{t('vision.desc')}</p>
-            
-            <div className="community-links">
-              <a href="https://x.com/Qosmospay" target="_blank" rel="noopener noreferrer" className="community-link">
-                <span className="community-icon">𝕏</span>
-                <span>{t('community.x')}</span>
-              </a>
-              <a href="https://t.me/Qosmospay_official" target="_blank" rel="noopener noreferrer" className="community-link">
-                <span className="community-icon">✈</span>
-                <span>{t('community.telegram')}</span>
-              </a>
-              <a href="https://t.me/QosmosPay" target="_blank" rel="noopener noreferrer" className="community-link">
-                <span className="community-icon">📢</span>
-                <span>{t('community.announcement')}</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="section services-section" id="services">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('services.subtitle')}</span>
-            <h2 className="section-title">{t('services.title')}</h2>
-          </div>
-          
-          <div className="services-grid">
-            {[
-              { id: 1, icon: '🧠', title: t('service.1.title'), desc: t('service.1.desc'), features: [t('service.1.f1'), t('service.1.f2'), t('service.1.f3'), t('service.1.f4')] },
-              { id: 2, icon: '💳', title: t('service.2.title'), desc: t('service.2.desc'), features: [t('service.2.f1'), t('service.2.f2'), t('service.2.f3'), t('service.2.f4')] },
-              { id: 3, icon: '🔐', title: t('service.3.title'), desc: t('service.3.desc'), features: [t('service.3.f1'), t('service.3.f2'), t('service.3.f3'), t('service.3.f4')] },
-              { id: 4, icon: '🌐', title: t('service.4.title'), desc: t('service.4.desc'), features: [t('service.4.f1'), t('service.4.f2'), t('service.4.f3'), t('service.4.f4')] },
-              { id: 5, icon: '📈', title: t('service.5.title'), desc: t('service.5.desc'), features: [t('service.5.f1'), t('service.5.f2'), t('service.5.f3'), t('service.5.f4')] },
-              { id: 6, icon: '🏢', title: t('service.6.title'), desc: t('service.6.desc'), features: [t('service.6.f1'), t('service.6.f2'), t('service.6.f3'), t('service.6.f4')] },
-            ].map((service, index) => (
-              <div key={service.id} className="service-card" style={{ animationDelay: `${index * 80}ms` }}>
-                <div className="service-icon">{service.icon}</div>
-                <h3 className="service-title">{service.title}</h3>
-                <p className="service-desc">{service.desc}</p>
-                <ul className="service-features">
-                  {service.features.map((feature, i) => (
-                    <li key={i}>
-                      <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="bg-primary/50 p-8 rounded-xl border border-white/10 hover-scale">
+                <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
+                  <div className="text-accent font-bold text-lg">{num.toString().padStart(2, '0')}</div>
+                </div>
+                <h3 className="text-xl font-bold mb-4 text-white">{t(`principles.${num}.title`)}</h3>
+                <p className="text-metal">{t(`principles.${num}.desc`)}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Market */}
-      <section className="section market-section" id="market">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('market.subtitle')}</span>
-            <h2 className="section-title">{t('market.title')}</h2>
+      {/* Vision & Community Section */}
+      <section id="vision" className="py-20 relative bg-primary">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-6 text-gradient bg-gradient-to-r from-white to-metal">
+              {t('vision.title')}
+            </h2>
+            <p className="text-xl text-metal leading-relaxed mb-8">
+              {t('vision.desc')}
+            </p>
           </div>
           
-          <div className="market-grid">
-            <div className="market-card">
-              <div className="market-icon">🌏</div>
-              <h3 className="market-name">{t('market.sea')}</h3>
-              <p className="market-stat">{t('market.sea.countries')}</p>
-            </div>
-            
-            <div className="market-card">
-              <div className="market-icon">🌍</div>
-              <h3 className="market-name">{t('market.africa')}</h3>
-              <p className="market-stat">{t('market.africa.countries')}</p>
-            </div>
-            
-            <div className="market-card">
-              <div className="market-icon">🌎</div>
-              <h3 className="market-name">{t('market.latam')}</h3>
-              <p className="market-stat">{t('market.latam.countries')}</p>
-            </div>
-            
-            <div className="market-card highlight">
-              <div className="market-icon">📈</div>
-              <h3 className="market-name">{t('market.potential')}</h3>
-              <p className="market-stat">1.7B {t('market.potential.stat')}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Now */}
-      <section className="section why-section" id="whynow">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-tag">{t('whynow.subtitle')}</span>
-            <h2 className="section-title">{t('whynow.title')}</h2>
-          </div>
-          
-          <div className="why-grid">
-            <div className="why-card">
-              <div className="why-number">01</div>
-              <h3 className="why-title">{t('whynow.1.title')}</h3>
-              <p className="why-desc">{t('whynow.1.desc')}</p>
-            </div>
-            
-            <div className="why-card">
-              <div className="why-number">02</div>
-              <h3 className="why-title">{t('whynow.2.title')}</h3>
-              <p className="why-desc">{t('whynow.2.desc')}</p>
-            </div>
-            
-            <div className="why-card">
-              <div className="why-number">03</div>
-              <h3 className="why-title">{t('whynow.3.title')}</h3>
-              <p className="why-desc">{t('whynow.3.desc')}</p>
-            </div>
-            
-            <div className="why-card">
-              <div className="why-number">04</div>
-              <h3 className="why-title">{t('whynow.4.title')}</h3>
-              <p className="why-desc">{t('whynow.4.desc')}</p>
+          <div className="max-w-md mx-auto">
+            <h3 className="text-xl font-bold mb-6 text-center text-white">{t('community.title')}</h3>
+            <div className="flex flex-col space-y-4">
+              <a href="https://x.com/Qosmospay" target="_blank" rel="noopener noreferrer" 
+                 className="flex items-center justify-center space-x-3 px-6 py-4 bg-secondary/50 rounded-xl border border-white/10 hover:bg-secondary/80 transition-all hover-scale">
+                <span className="text-xl">𝕏</span>
+                <span className="text-white">{t('community.x')}</span>
+              </a>
+              
+              <a href="https://t.me/Qosmospay_official" target="_blank" rel="noopener noreferrer"
+                 className="flex items-center justify-center space-x-3 px-6 py-4 bg-secondary/50 rounded-xl border border-white/10 hover:bg-secondary/80 transition-all hover-scale">
+                <span className="text-xl">✈</span>
+                <span className="text-white">{t('community.telegram')}</span>
+              </a>
+              
+              <a href="https://t.me/QosmosPay" target="_blank" rel="noopener noreferrer"
+                 className="flex items-center justify-center space-x-3 px-6 py-4 bg-secondary/50 rounded-xl border border-white/10 hover:bg-secondary/80 transition-all hover-scale">
+                <span className="text-xl">📢</span>
+                <span className="text-white">{t('community.announcement')}</span>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Join Section */}
-      <section className="section join-section" id="join">
-        <div className="join-bg" />
-        <div className="join-content">
-          <h2 className="join-title">{t('join.title')}</h2>
-          <p className="join-desc">{t('join.desc')}</p>
-          
-          <JoinForm />
+      <section id="join" className="py-20 relative bg-gradient-to-b from-primary to-dark">
+        <div className="absolute inset-0 bg-grid opacity-20"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-6 text-white">
+              {t('join.title')}
+            </h2>
+            <p className="text-xl text-metal mb-8">
+              {t('join.desc')}
+            </p>
+            
+            <div className="bg-glass p-8 rounded-2xl border border-white/10">
+              <JoinForm />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-logo">
-              <img src="/logo.png" alt="Qosmos Logo" />
+      <footer className="bg-dark py-8 border-t border-white/10">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <div className="flex items-center space-x-2">
+                <img src="/logo.png" alt="Qosmos Logo" className="h-8 w-auto" />
+                <span className="text-white font-bold text-lg">Qosmos Pay</span>
+              </div>
             </div>
-            <p className="footer-text">
-              {t('footer.contact')}: <a href={`mailto:${t('footer.email')}`}>{t('footer.email')}</a>
-            </p>
+            
+            <div className="text-center md:text-right">
+              <p className="text-metal">
+                {t('footer.contact')}:{' '}
+                <a href={`mailto:${t('footer.email')}`} className="text-accent hover:text-accent-light">
+                  {t('footer.email')}
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </footer>

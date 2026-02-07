@@ -16,12 +16,12 @@ export default function JoinForm() {
     setStatus('idle')
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/contact@qosmos.one', {
+      const response = await fetch('https://formsubmit.co/ajax/contact@qosmospay.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: email,
-          _subject: 'Qosmos New Subscriber',
+          _subject: 'Qosmos Pay New Subscriber',
           _captcha: 'false'
         })
       })
