@@ -359,8 +359,7 @@ export default function Home() {
         <div className="container">
           <div className="footer-content">
             <div className="footer-logo">
-              <span className="logo-icon">◈</span>
-              <span>QOSMOS</span>
+              <img src="/logo.png" alt="Qosmos Logo" />
             </div>
             <p className="footer-text">
               {t('footer.contact')}: <a href={`mailto:${t('footer.email')}`}>{t('footer.email')}</a>

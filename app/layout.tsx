@@ -26,8 +26,7 @@ export default function RootLayout({
           <nav className="navbar">
             <div className="nav-container">
               <a href="#" className="nav-logo">
-                <span className="logo-icon">◈</span>
-                <span className="logo-text">QOSMOS</span>
+                <img src="/logo.png" alt="Qosmos Logo" />
               </a>
               <div className="nav-right">
                 <LanguageSwitcher />
