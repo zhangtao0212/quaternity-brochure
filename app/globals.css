@@ -93,6 +93,11 @@ body {
   font-size: 1.25rem;
 }
 
+.nav-logo img {
+  height: 40px;
+  width: auto;
+}
+
 .logo-icon {
   color: var(--primary);
   font-size: 1.5rem;
@@ -830,6 +835,11 @@ body {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--text-dark);
+}
+
+.footer-logo img {
+  height: 32px;
+  width: auto;
 }
 
 .footer-text {
