@@ -30,6 +30,46 @@ export const translations = {
     'value.4.title': 'On-Chain Credit System',
     'value.4.desc': 'Build creditworthiness through blockchain activity. Your on-chain behavior creates a verifiable financial identity.',
     
+    // Problem / Why Qosmos Pay
+    'problem.title': 'Why Qosmos Pay?',
+    'problem.subtitle': 'Solving Core Pain Points',
+    'problem.1.title': 'Bridging the Gap',
+    'problem.1.desc': 'Assets live on-chain, while life happens off-chain. We remove the fragmentation between your digital wealth and daily needs.',
+    'problem.2.title': 'No More Trade-offs',
+    'problem.2.desc': 'Traditionally, places where you spend offer no yield, and places where you earn lock your funds. With Qosmos Pay, you no longer have to choose.',
+    
+    // Core Capabilities
+    'capabilities.title': 'One Account, Two Powers.',
+    'capabilities.subtitle': 'Comprehensive Crypto Financial Solutions',
+    
+    // Spend Section
+    'spend.title': 'Spend - Crypto as Money',
+    'spend.1.title': 'Global Payments',
+    'spend.1.desc': 'Virtual and physical cards for online and offline spending worldwide.',
+    'spend.2.title': 'Stablecoin Native',
+    'spend.2.desc': 'Direct support for USDT and USDC deposits.',
+    'spend.3.title': 'Seamless Conversion',
+    'spend.3.desc': 'Merchants receive fiat while you spend your crypto balance, providing real liquidity for your assets.',
+    
+    // Earn Section
+    'earn.title': 'Earn - Crypto as Capital',
+    'earn.1.title': 'Fixed-term Yield',
+    'earn.1.desc': '30/60/90 days products with clear rules and transparent structures.',
+    'earn.2.title': 'Productive Assets',
+    'earn.2.desc': 'Allow your crypto to work efficiently without sacrificing usability.',
+    'earn.3.title': 'Beyond Speculation',
+    'earn.3.desc': 'Focus on sustainable asset growth rather than high-frequency hype.',
+    
+    // Product Principles
+    'principles.title': 'Built on Integrity and Utility.',
+    'principles.subtitle': 'Our Core Principles',
+    'principles.1.title': 'Payments First',
+    'principles.1.desc': 'Only assets that can be used smoothly have lasting value.',
+    'principles.2.title': 'Clarity & Planning',
+    'principles.2.desc': 'We prioritize defined terms and transparent rules over hype.',
+    'principles.3.title': 'Unified Future',
+    'principles.3.desc': 'A single account should support spending, saving, and growth simultaneously.',
+    
     // Services
     'services.title': 'Our Services',
     'services.subtitle': 'Comprehensive financial solutions powered by cutting-edge technology',
@@ -149,12 +189,12 @@ export const translations = {
     'about.desc': 'Qosmos是一个为全球17亿无银行账户人群与中小企业提供普惠金融服务的链上银行平台。通过区块链技术与智能合约打造低成本、高效、安全的包容性金融服务。',
     
     // Problem / Why Qosmos Pay
-    'problem.title': '为什么选择 Qosmos Pay？',
-    'problem.subtitle': '解决核心痛点',
-    'problem.1.title': '消除隔阂',
-    'problem.1.desc': '资产在链上，而生活在链下。我们为您弥合数字财富与日常需求之间的断层。',
-    'problem.2.title': '拒绝取舍',
-    'problem.2.desc': '传统模式下，消费场所没有收益，而理财场所则会锁死资金。在 Qosmos Pay，您无需再做选择。',
+    'problem.title': 'Why Qosmos Pay?',
+    'problem.subtitle': 'Solving Core Pain Points',
+    'problem.1.title': 'Bridging the Gap',
+    'problem.1.desc': 'Assets live on-chain, while life happens off-chain. We remove the fragmentation between your digital wealth and daily needs.',
+    'problem.2.title': 'No More Trade-offs',
+    'problem.2.desc': 'Traditionally, places where you spend offer no yield, and places where you earn lock your funds. With Qosmos Pay, you no longer have to choose.',
     
     // Core Capabilities
     'capabilities.title': '一个账户，双重能量。',

@@ -1,47 +1,47 @@
 :root {
-  /* Primary Colors - Softer, more professional palette */
-  --primary: #5B7FFF;
-  --primary-dark: #4A6EE0;
-  --primary-light: #7B9BFF;
-  --primary-soft: rgba(91, 127, 255, 0.15);
+  /* Primary Colors - Based on monnaire-homepage dark theme */
+  --primary: #0EA5E9; /* accent color - bright blue */
+  --primary-dark: #0C8FCB;
+  --primary-light: #38B6FF;
+  --primary-soft: rgba(14, 165, 233, 0.15);
   
   /* Secondary Colors */
-  --secondary: #38B6FF;
-  --secondary-light: #58C8FF;
+  --secondary: #6366F1; /* highlight color - purple-blue */
+  --secondary-light: #818CF8;
   
   /* Accent Colors */
-  --accent: #22D3A0;
+  --accent: #22D3A0; /* keep existing accent green */
   --accent-cyan: #4DD4C8;
   
-  /* Background Colors - Lighter, more elegant */
-  --bg-primary: #F8FAFC;
-  --bg-secondary: #FFFFFF;
-  --bg-tertiary: #F1F5F9;
-  --bg-dark: #0F1729;
+  /* Background Colors - Dark theme like monnaire-homepage */
+  --bg-primary: #0F172A; /* primary background */
+  --bg-secondary: #1E293B; /* secondary background */
+  --bg-tertiary: #334155;
+  --bg-dark: #030712; /* dark background */
   --bg-darker: #0A0F1A;
   
   /* Text Colors */
-  --text-primary: #1E293B;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
+  --text-primary: #F8FAFC; /* light text on dark background */
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8; /* metal color */
   --text-light: #F8FAFC;
-  --text-dark: #0F1729;
+  --text-dark: #1E293B; /* dark text for light backgrounds if needed */
   
   /* Border Colors */
-  --border-light: #E2E8F0;
-  --border-medium: #CBD5E1;
-  --border-highlight: rgba(91, 127, 255, 0.2);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.2);
+  --border-highlight: rgba(14, 165, 233, 0.4);
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1);
+  /* Shadows - adjusted for dark theme */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
   
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
   --gradient-accent: linear-gradient(135deg, var(--primary), var(--accent-cyan));
-  --gradient-subtle: linear-gradient(180deg, rgba(91, 127, 255, 0.08) 0%, transparent 100%);
+  --gradient-subtle: linear-gradient(180deg, rgba(14, 165, 233, 0.1) 0%, transparent 100%);
 }
 
 * {
@@ -1165,4 +1165,64 @@ body {
   .services-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Additional utility classes inspired by monnaire-homepage */
+.bg-glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.bg-grid {
+  background-image: radial-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-tech-grid {
+  background-image: 
+    radial-gradient(rgba(14, 165, 233, 0.15) 1px, transparent 1px),
+    linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px, 60px 60px;
+}
+
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tech-line {
+  background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.5), transparent);
+  height: 1px;
+  width: 100%;
+}
+
+.border-gradient {
+  border-image: linear-gradient(to right, #0EA5E9, #6366F1) 1;
 }
